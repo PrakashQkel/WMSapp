@@ -7,6 +7,7 @@ import 'package:wms_app/widgets/input_textbox.dart';
 import 'package:wms_app/widgets/subscription_page_dropdown_menu.dart';
 import 'package:wms_app/widgets/page_title.dart';
 
+//This is the subscription page similar to connection page
 class subscription extends StatefulWidget {
   const subscription({Key? key}) : super(key: key);
 
@@ -66,6 +67,7 @@ class _subscriptionState extends State<subscription> {
                       setState(() {
                         loading = true;
                       });
+                      //calling the MQTT subscribe function when the subscribe button is pressed
                       MQTTState.subscribe();
                     }
                   ),

@@ -4,6 +4,7 @@ import 'package:wms_app/services/auth_service.dart';
 import 'package:wms_app/widgets/appbar_title.dart';
 import 'package:wms_app/widgets/page_title.dart';
 
+//this is the SignIn page
 class SignIn extends StatefulWidget {
 
   final Function toggleSignInAndRegister;
@@ -23,17 +24,18 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
 
+    //initializing some variables
     final auth = AuthService();
     final emailController = TextEditingController();
     final pwdController = TextEditingController();
 
-    return loading ? Loading() : Scaffold(
+    return loading ? Loading() : Scaffold( //for displaying the loading screen while it's signing in
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: AppbarTitle(),
         backgroundColor: Colors.blue[500],
         actions: [
-          IconButton(
+          IconButton( //the button to switch to Register page
               onPressed: (){
                 widget.toggleSignInAndRegister();
               },
@@ -56,7 +58,7 @@ class _SignInState extends State<SignIn> {
                     Container(
                       width: 250,
                       padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: TextFormField(
+                      child: TextFormField(  //TextField to enter Email
                         validator: (val) => val!.isEmpty ? 'Enter Email!' : null,
                         controller: emailController,
                         keyboardType: TextInputType.text,
@@ -71,7 +73,7 @@ class _SignInState extends State<SignIn> {
                       Container(
                         width: 250,
                         padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: TextFormField(
+                        child: TextFormField(  //TextField to enter Password
                           validator: (val) => val!.isEmpty ? 'Enter password!' : null,
                           controller: pwdController,
                           keyboardType: TextInputType.text,
@@ -84,13 +86,13 @@ class _SignInState extends State<SignIn> {
                           ),
                         ),
                       ),
-                      Text(error, style: TextStyle(color: Colors.red),)
+                      Text(error, style: TextStyle(color: Colors.red),) //Displaying the error
                     ],
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.all(40),
-                  child: ElevatedButton.icon(
+                  child: ElevatedButton.icon( //SignIn button
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
                       padding: EdgeInsets.all(15),
@@ -105,11 +107,13 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                     onPressed: () async{
-                      if(formKey.currentState!.validate()) {
+                      if(formKey.currentState!.validate()) { //if the form validation is successful i.e., email and password are entered
                         setState(() {
-                          loading = true;
+                          loading = true; //triggers the loading screen
                         });
+                        //calling the SignIn function
                         dynamic result = await auth.signInWithEmailAndPassword(emailController.text, pwdController.text);
+                        //if SignIn is unsuccessful
                         if(result == null) {
                           setState(() {
                             loading = false;

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wms_app/pages/authentication/register.dart';
 import 'package:wms_app/pages/authentication/sign_in.dart';
 
+
+//this class toggles between the SignIn and Register pages
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);
 

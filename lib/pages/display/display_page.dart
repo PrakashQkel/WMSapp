@@ -32,20 +32,22 @@ class display_page extends StatefulWidget {
 
 class _display_pageState extends State<display_page> {
 
-  int _currentIndex = 0;
-  double maxCapacity = 100;
-  double maxHeight = 245;
-  double level1 = 120, level2 = 155, level3 = 10;
-  double flow1 = 3.55, flow2 = 2, flow3 = 5.6;
+  int _currentIndex = 0; //for identifying which tab is open
+  double maxCapacity = 100; //maximum capacity of tank
+  double maxHeight = 245; //height of the tank in the app
+  double level1 = 120, level2 = 155, level3 = 10; //water levels
+  double flow1 = 3.55, flow2 = 2, flow3 = 5.6; //flow meter readings
 
   var controller = TextEditingController();
 
+  //function to correct the water level so that if the reading is more than the maximum capacity of the tank, just display the maximum capacity
   checkMax(double water_level){
     if(water_level>maxCapacity)
       return maxCapacity;
     else return water_level;
   }
 
+  //function for displaying the water level message such as EMPTY, LOW, FULL, etc.
   water_level_message(double water_level){
     double newLevel = checkMax(water_level);
     if (newLevel==0)
@@ -95,6 +97,7 @@ class _display_pageState extends State<display_page> {
       );
   }
 
+  //function to calculate and display the percentage of water level according to tank capacity
   percentage_level(double water_level){
     double newLevel = checkMax(water_level);
     double percentage = newLevel/maxCapacity * 100;
@@ -123,6 +126,7 @@ class _display_pageState extends State<display_page> {
     );
   }
 
+  //design of the water tanks
   water_tank(int tank_no, double water_level){
     double newLevel = checkMax(water_level);
     var water_level_str = newLevel.toStringAsFixed(1);
@@ -212,6 +216,7 @@ class _display_pageState extends State<display_page> {
     );
   }
 
+  //design of the flow meter gauges
   flow_gauge(int gauge_no, double flow){
     String flowString = flow.toStringAsFixed(2);
     return Expanded(
@@ -269,6 +274,7 @@ class _display_pageState extends State<display_page> {
     );
   }
 
+  //function to display the 3 different tabs: Water level, Flow meter and Maps
   tabs(int tab){
     if(tab==0) {
       return Container(
@@ -320,6 +326,7 @@ class _display_pageState extends State<display_page> {
   @override
   Widget build(BuildContext context) {
 
+    //Using Provider package to receive the data from MQTT broker
     final appState = Provider.of<MQTTManager>(context);
     level1 = appState.L1;
     level2 = appState.L2;
@@ -341,7 +348,7 @@ class _display_pageState extends State<display_page> {
             Expanded(
               flex: 1,
               child: SingleChildScrollView(
-                child: BottomNavigationBar(
+                child: BottomNavigationBar( //the bottom bar where the tabs can be selected
                   enableFeedback: true,
                   currentIndex: _currentIndex,
                   type: BottomNavigationBarType.fixed,

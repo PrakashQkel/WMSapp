@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
+//just a collection of connection statuses
 enum MqttAppState{
   connected,
   connecting,
@@ -11,9 +12,12 @@ enum MqttAppState{
   subscribed
 }
 
+//this class contains the functions for connecting, subscribing and listening to the MQTT server
 class MQTTManager extends ChangeNotifier{
-  MqttAppState appState = MqttAppState.disconnected;
+
+  MqttAppState appState = MqttAppState.disconnected; //initial state is disconnected
   MqttAppState previousState = MqttAppState.disconnected;
+
   late String receivedData;
   late String currentPage = 'Connection_page';
 
@@ -25,14 +29,15 @@ class MQTTManager extends ChangeNotifier{
 
   double L1=0, L2=0, F1=0, F2=0, F3=0;
 
-  void Change({newBroker, newClientID, newPort, newTopic}){
+ /* void Change({newBroker, newClientID, newPort, newTopic}){
     broker = newBroker;
     clientID = newClientID;
     port = newPort;
     topic = newTopic;
     notifyListeners();
-  }
+  }*/
 
+  //function to initialize the MQTT client using provided broker, port and clientID
   void initializeClient(){
     client = MqttServerClient(broker, clientID);
     client.port = port;
@@ -52,6 +57,7 @@ class MQTTManager extends ChangeNotifier{
         .withWillQos(MqttQos.atLeastOnce);
   }
 
+  //function to connect to the MQTT broker
   void connect() async{
     assert(client != null);
     try{
@@ -65,20 +71,24 @@ class MQTTManager extends ChangeNotifier{
     }
   }
 
+  //function to subscribe to a topic
   void subscribe(){
     client.subscribe(topic, MqttQos.atMostOnce);
   }
 
+  //function to disconnect from MQTT broker
   void disconnect(){
     client.disconnect();
   }
 
+  //function to publish data to the broker
   void publish(String message){
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
     builder.addString(message);
     client.publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
   }
 
+  //sets the connection status to Connected once the connection is successful
   void onConnected(){
     print('Connection successful');
     setConnectionState(MqttAppState.connected);
@@ -86,6 +96,8 @@ class MQTTManager extends ChangeNotifier{
 
   void onSubscribed(String topic){
     print('Subscription confirmed for topic: $topic');
+
+    //listening for data from topic after successful subscription
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       final recMess = c![0].payload as MqttPublishMessage;
       final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
@@ -93,10 +105,12 @@ class MQTTManager extends ChangeNotifier{
       print('');
       setReceivedData(pt);
     });
+    //setting connection status to subscribed
     if(appState!=MqttAppState.subscribed)
       setConnectionState(MqttAppState.subscribed);
   }
 
+  //setting connection status to Disconnected
   void onDisconnected() {
     print('EXAMPLE::OnDisconnected client callback - Client disconnection');
     if (client.connectionStatus!.disconnectionOrigin ==
@@ -106,6 +120,7 @@ class MQTTManager extends ChangeNotifier{
     setConnectionState(MqttAppState.disconnected);
   }
 
+  //deserializing the received JSON data and storing them in floating point variables
   void setReceivedData(text){
     receivedData = text;
     Map<String, dynamic> data = jsonDecode(receivedData);
@@ -117,6 +132,7 @@ class MQTTManager extends ChangeNotifier{
     notifyListeners();
   }
 
+  //function to change the connection status
   void setConnectionState(state){
     appState = state;
     notifyListeners();

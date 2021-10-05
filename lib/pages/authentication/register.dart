@@ -4,6 +4,8 @@ import 'package:wms_app/services/auth_service.dart';
 import 'package:wms_app/widgets/appbar_title.dart';
 import 'package:wms_app/widgets/page_title.dart';
 
+
+//this is the Register page, similar to SignIn page
 class Register extends StatefulWidget {
 
   final Function toggleSignInAndRegister;
@@ -114,6 +116,8 @@ class _RegisterState extends State<Register> {
                           setState(() {
                             loading = true;
                           });
+
+                          //the only difference from SignIn page is that we call the Register function instead of SignIn function
                           dynamic result = await auth.registerWithEmailAndPassword(emailController.text, pwdController.text);
                           if(result == null) {
                             setState(() {

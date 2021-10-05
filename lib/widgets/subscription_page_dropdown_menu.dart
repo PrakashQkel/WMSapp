@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wms_app/MQTTClientWrapper.dart';
-import 'package:wms_app/pages/connection/connection_page.dart';
 import 'package:wms_app/services/auth_service.dart';
 
 class SubscriptionPageMenu extends StatelessWidget {
@@ -74,7 +73,7 @@ class SubscriptionPageMenu extends StatelessWidget {
                       'broker: '+MQTTState.broker
                   ),
                   onTap: () {
-                    MQTTState.disconnect();
+                    MQTTState.disconnect(); //disconnecting from MQTT server
                     Navigator.pop(context);
                   }
               )
@@ -90,8 +89,8 @@ class SubscriptionPageMenu extends StatelessWidget {
                     'Sign Out'
                 ),
                 onTap: () async{
-                  Navigator.pop(context);//close the menu upon clicking an option
-                  await auth.signOut();
+                  Navigator.pop(context); //close the menu upon clicking an option
+                  await auth.signOut(); //signing out
                 },
               )
           ),

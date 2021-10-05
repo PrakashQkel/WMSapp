@@ -8,11 +8,13 @@ import 'package:wms_app/widgets/page_title.dart';
 import 'package:wms_app/MQTTClientWrapper.dart';
 import 'package:provider/provider.dart';
 
+
+//This is the Connection page
 class connection extends StatefulWidget {
-  //const connection({Key? key}) : super(key: key);
 
   @override
   _connectionState createState() => _connectionState();
+
 }
 
 class _connectionState extends State<connection> {
@@ -22,7 +24,7 @@ class _connectionState extends State<connection> {
   @override
   Widget build(BuildContext context) {
 
-    final MQTTState = Provider.of<MQTTManager>(context);
+    final MQTTState = Provider.of<MQTTManager>(context); //using Provider package to receive the MQTT connection status
 
     if(MQTTState.appState == MqttAppState.disconnected){
       setState(() {
@@ -74,6 +76,7 @@ class _connectionState extends State<connection> {
                         setState(() {
                           loading = true;
                         });
+                        //calling the MQTT connect function when the connect button is pressed
                           MQTTState.initializeClient();
                           MQTTState.connect();
                       },
@@ -85,79 +88,3 @@ class _connectionState extends State<connection> {
         );
   }
 }
-
-/*
-class connection_page extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-
-      */
-/*final appState = Provider.of<MQTTManager>(context);*//*
-
-
-      //displaying messages
-      */
-/*if(appState.appState==MqttAppState.connecting){
-        Future.delayed(Duration(milliseconds: 100), (){
-          appState.previousState = MqttAppState.connecting;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Connecting...', textAlign: TextAlign.center,)));
-        }
-        );
-
-      }
-      Future.delayed(Duration(milliseconds: 100), (){
-        if(appState.appState==MqttAppState.disconnected && appState.previousState==MqttAppState.connecting) {
-          appState.previousState = MqttAppState.disconnected;
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Connection unsuccessful!', textAlign: TextAlign.center,)));
-        }
-      });
-
-      if(appState.appState==MqttAppState.connected){
-        Future.delayed(Duration(milliseconds: 100), (){
-          appState.previousState = MqttAppState.connected;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully Connected to Broker "${appState.broker}"', textAlign: TextAlign.center,)));
-        }
-        );
-      }
-
-      if(appState.appState==MqttAppState.subscribed && appState.previousState!=MqttAppState.subscribed){
-        Future.delayed(Duration(milliseconds: 100), (){
-          appState.previousState = MqttAppState.subscribed;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Successfully Subscribed to Topic "${appState.topic}"', textAlign: TextAlign.center,)));
-        }
-        );
-      }
-
-      if(appState.appState==MqttAppState.disconnected && appState.previousState!=MqttAppState.disconnected){
-        Future.delayed(Duration(milliseconds: 100), (){
-          appState.previousState = MqttAppState.disconnected;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Disconnected', textAlign: TextAlign.center,)));
-        }
-        );
-      }*//*
-
-
-      return SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PageTitle('Connection'),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InputTextBox('Broker', false),
-                  InputTextBox('Port', true),
-                  InputTextBox('Client ID', false)
-                ],
-              ),
-            ),
-            InputButton('Connect', true),
-          ],
-        ),
-      );
-  }
-}
-*/
-

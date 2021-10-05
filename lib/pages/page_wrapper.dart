@@ -5,6 +5,8 @@ import 'package:wms_app/pages/display/display_page.dart';
 import 'package:wms_app/pages/subscription/subscription_page.dart';
 import '../MQTTClientWrapper.dart';
 
+
+//This class displays the Connection, Subscription and Display pages according to the MQTT connection status
 class PageWrapper extends StatelessWidget {
   const PageWrapper({Key? key}) : super(key: key);
 
@@ -13,10 +15,10 @@ class PageWrapper extends StatelessWidget {
 
     final appState = Provider.of<MQTTManager>(context);
 
+    //displaying messages according to connection status
     if(appState.appState==MqttAppState.connecting){
       Future.delayed(Duration(milliseconds: 100), (){
         appState.previousState = MqttAppState.connecting;
-        //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Connecting...', textAlign: TextAlign.center,)));
       }
       );
     }
@@ -35,7 +37,6 @@ class PageWrapper extends StatelessWidget {
       }
       );
     }
-
     if(appState.appState==MqttAppState.subscribed && appState.previousState!=MqttAppState.subscribed){
       Future.delayed(Duration(milliseconds: 100), (){
         appState.previousState = MqttAppState.subscribed;
@@ -43,7 +44,6 @@ class PageWrapper extends StatelessWidget {
       }
       );
     }
-
     if(appState.appState==MqttAppState.disconnected && appState.previousState!=MqttAppState.disconnected){
       Future.delayed(Duration(milliseconds: 100), (){
         appState.previousState = MqttAppState.disconnected;
@@ -59,7 +59,7 @@ class PageWrapper extends StatelessWidget {
     else if(appState.appState == MqttAppState.subscribed) {
       return display();
     }
-    else//(MQTTState.appState == MqttAppState.disconnected && MQTTState.currentPage!='Connection_page')
+    else
       return connection();
   }
 }

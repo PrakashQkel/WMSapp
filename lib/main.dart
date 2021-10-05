@@ -9,9 +9,10 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp();  //initializing Firebase
+
   runApp(
-      MyApp()
+      MyApp() //running the app
   );
 }
 
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<FUser?>.value(
+
+    return StreamProvider<FUser?>.value( //Using Provider package to receive the user authentication status from Firebase
       initialData: null,
-      value: AuthService().userState,
-      child: ChangeNotifierProvider<MQTTManager>(
+      value: AuthService().userState,  //the exact value that is received
+      child: ChangeNotifierProvider<MQTTManager>( //Using Provider package to receive the MQTT connection status from MQTTClientWrapper.dart
         create: (context)=>MQTTManager(),
         child:MaterialApp(
           home: AuthenticationWrapper()

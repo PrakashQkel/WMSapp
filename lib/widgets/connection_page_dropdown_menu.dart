@@ -66,8 +66,8 @@ class ConnectionPageMenu extends StatelessWidget {
                     'Sign Out'
                 ),
                 onTap: () async{
-                  await auth.signOut();
-                  Navigator.pop(context);//close the menu upon clicking an option
+                  await auth.signOut(); //signing out
+                  Navigator.pop(context); //close the menu upon clicking an option
                 },
               )
           ),

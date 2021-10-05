@@ -78,7 +78,7 @@ class DisplayPageMenu extends StatelessWidget {
                     ],
                   ),
                   onTap: (){
-                    MQTTState.disconnect();
+                    MQTTState.disconnect(); //disconnecting from MQTT broker
                     Navigator.pop(context);
                   }
               )
@@ -95,7 +95,7 @@ class DisplayPageMenu extends StatelessWidget {
                 ),
                 onTap: () async{
                   Navigator.pop(context);//close the menu upon clicking an option
-                  await auth.signOut();
+                  await auth.signOut(); //signing out
                 },
               )
           ),
